@@ -1,11 +1,11 @@
-public class Choice {
+public class Choice implements Describable{
     /*
     Volba, říká hráči co udělá.
 
     The choice shows what will player do.
      */
     public String description = "Place holder desc";
-    private Situation targetSituation;//Do jaké situace pošle hráče pokuď si zvolí tuto možnost | Where will be player sent after choosing the choice
+    public Situation targetSituation;//Do jaké situace pošle hráče pokuď si zvolí tuto možnost | Where will be player sent after choosing the choice
 
     Choice(String description, Situation targetSituation){
         this.description = description;
@@ -26,9 +26,5 @@ public class Choice {
 
     public Situation getTargetSituation(){
         return this.targetSituation;
-    }
-
-    public void print(int index){
-        System.
     }
 }
