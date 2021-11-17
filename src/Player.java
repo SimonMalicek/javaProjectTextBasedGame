@@ -1,16 +1,32 @@
 import java.util.ArrayList;
 
-public class Player extends Creature implements Damageable{
+public class Player extends Creature implements Describable{
+    /*
+    V této třídě jsou uložené stavy hry, po kterých hráč putuje.
+    Hráč má životy, pokuď klesnou pod 1, skončí hra.
+    Hráč má inventář, kde postupně sbírá itemy ve hře.
+
+
+     */
     public int hp = 5;
-    public Situation currentSituation, nextSituation;
+    public Situation currentSituation, nextSituation, gameOver;
     public ArrayList<Item> inventory = new ArrayList<Item>();
 
-    Player(Situation startingSituation) {
+    Player(){
+    }
+
+    public void setMainSituations(Situation startingSituation, Situation gameOver) {
         this.currentSituation = startingSituation;
+        this.gameOver = gameOver;
     }
 
     public void receiveDmg(int dmg) {
         this.hp -= dmg;
+        if (this.hp < 1){
+            this.nextSituation = gameOver;
+            System.out.println("You've fallen in the battle.");
+            this.nextSituation.execute();
+        }
     }
 
     public boolean isAlive() {
@@ -33,7 +49,7 @@ public class Player extends Creature implements Damageable{
         return nextSituation;
     }
 
-    public void setNextSituation(Situation nextSituation) {
+    public void setCurrent(Situation nextSituation) {
 
         this.nextSituation = nextSituation;
     }
@@ -56,5 +72,20 @@ public class Player extends Creature implements Damageable{
     @Override
     public String getDescription() {
         return "Player character";
+    }
+
+    //
+    public void setNextSituation(Situation nextSituation) {
+        if (nextSituation.getDescription() == "After furious fight, you stand victorious."){
+            Item sword = new Item("Excalibur", "Excalibur is the legendary sword of King Arthur.");
+            if (this.hasItem(sword)){
+                this.currentSituation = nextSituation;
+            }
+            else{
+                System.out.println("You've challenged the dragon in hand to hand combat, you've lost.");
+                this.currentSituation = gameOver;
+            }
+        }
+        this.nextSituation = nextSituation;
     }
 }
