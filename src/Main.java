@@ -10,8 +10,10 @@ public class Main {
         Item sword = new Item("Excalibur", "Excalibur is the legendary sword of King Arthur.");
 
         //end,win of the game
-        Situation gameOver = new Situation("Game over", null);
-        Situation win = new Situation("Congratulation you won", null);
+        SituationWin win = new SituationWin("Congratulation you won");
+        ArrayList<Choice> gameoverChoices = new ArrayList<>(){};
+        Situation gameOver = new Situation("Game over", gameoverChoices);
+
 
         //lists of choices for difference situations
         ArrayList<Choice> startChoices = new ArrayList<>();
@@ -32,7 +34,7 @@ public class Main {
         SituationAddItem swordOut = new SituationAddItem("You've managed to pick up the swordl.", swordOutChoices, player, sword);
         Situation chasm = new Situation("", chasmChoices);
         Situation dragon = new Situation("", dragonChoices);
-        SituationTakeDamage dragonNoSword = new SituationTakeDamage("You challenged the dragon in hand-to-hand combat.", null, player, 10 );
+        SituationTakeDamage dragonNoSword = new SituationTakeDamage("You challenged the dragon in hand-to-hand combat.", gameoverChoices, player, 10 );
         SituationTakeDamage dragonWithSword = new SituationTakeDamage("Good thing you found that sword, after furious fight you stand victorious. \nNow treasure is yours.", null, player, 9);
         Situation treasure = new Situation("", treasureChoices);
 
@@ -42,11 +44,16 @@ public class Main {
         startChoices.add(startSit1);
         startChoices.add(startSit2);
 
+        //choices for end
+        Choice end1 = new Choice("Restart", start);
+        Choice end2 = new Choice("Exit", null);
+        gameoverChoices.add(end1);
+        gameoverChoices.add(end2);
 
         //choices for crossroads
-        Choice crossroads1 = new Choice("Go left", gameOver);
-        Choice crossroads2 = new Choice("Go forward", gameOver);
-        Choice crossroads3 = new Choice("Go right", gameOver);
+        Choice crossroads1 = new Choice("Go left", swordIn);
+        Choice crossroads2 = new Choice("Go forward", chasm);
+        Choice crossroads3 = new Choice("Go right", dragon);
         Choice crossroads4 = new Choice("Go back", crossroads);
         crossroadsChoices.add(crossroads1);
         crossroadsChoices.add(crossroads2);
@@ -64,10 +71,10 @@ public class Main {
         Choice swordPuzzle2 = new Choice("2^n ", swordPuzzle);
         Choice swordPuzzle3 = new Choice("log n", swordPuzzle);
         Choice swordPuzzle4 = new Choice("n^2", swordOut);
-        swordInChoices.add(swordPuzzle1);
-        swordInChoices.add(swordPuzzle2);
-        swordInChoices.add(swordPuzzle3);
-        swordInChoices.add(swordPuzzle4);
+        swordPuzzleChoices.add(swordPuzzle1);
+        swordPuzzleChoices.add(swordPuzzle2);
+        swordPuzzleChoices.add(swordPuzzle3);
+        swordPuzzleChoices.add(swordPuzzle4);
 
         //choices for swordOut
         Choice swordOut1 = new Choice("Go back to the crossing", crossroads);

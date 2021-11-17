@@ -12,6 +12,8 @@ public class Controller<Type extends Choice> {
     private int userInput;
     private Player player;
     FileManager fileManager;
+    Situation situation;
+    Choice options = New Choice("Go into the cave", optionsMenu);
 
     Controller(Player player, FileManager fileManager) {
         this.player = player;
@@ -24,12 +26,17 @@ public class Controller<Type extends Choice> {
 
     public void loop(){
         while(true){
-            this.player.getCurrentSituation().execute();
+            try {
+                this.player.getCurrentSituation().execute();
+
+            } catch (NullPointerException e){
+                System.out.println("Thank you for playing");
+                return;
+            }
             int maxIndex = this.showChoices();
             this.userInput = this.getUserInput(maxIndex);
-            this.nextSituation = this.currentSituation.getChoice(userInput - 1).getTargetSituation();
-            this.player.setNextSituation(this.nextSituation);
-            System.out.println(player.currentSituation.getDescription());
+            this.nextSituation = this.player.getCurrentSituation().getChoice(userInput - 1).getTargetSituation();
+            this.player.setCurrentSituation(this.nextSituation);
         }
     }
     public void gameOverOptions(){
@@ -49,6 +56,7 @@ public class Controller<Type extends Choice> {
     public int showChoices(){
         //returns maximal value for viable input
         int i = 1;
+        this.player.getCurrentSituation().getChoices().add()
         for (Choice choice:
              this.player.getCurrentSituation().getChoices()) {
             if(choice instanceof Choice){
@@ -68,7 +76,7 @@ public class Controller<Type extends Choice> {
 
     public int getUserInput(int maxIndex) {
         Scanner scan = new Scanner(System.in);
-        System.out.println("What will you do?: ");
+        System.out.print("What will you do?: ");
         int userInput = scan.nextInt();
         return userInput;
     }

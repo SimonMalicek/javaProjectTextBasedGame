@@ -76,16 +76,6 @@ public class Player extends Creature implements Describable{
 
     //
     public void setNextSituation(Situation nextSituation) {
-        if (nextSituation.getDescription() == "After furious fight, you stand victorious."){
-            Item sword = new Item("Excalibur", "Excalibur is the legendary sword of King Arthur.");
-            if (this.hasItem(sword)){
-                this.currentSituation = nextSituation;
-            }
-            else{
-                System.out.println("You've challenged the dragon in hand to hand combat, you've lost.");
-                this.currentSituation = gameOver;
-            }
-        }
         this.nextSituation = nextSituation;
     }
 }
