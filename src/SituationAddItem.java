@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.function.Supplier;
 
 public class SituationAddItem extends Situation{
     /*
@@ -15,11 +16,13 @@ public class SituationAddItem extends Situation{
         super(description, choices);
         this.player = player;
         this.item = item;
+
     }
 
     @Override
     public void execute(){
         System.out.println(super.getDescription());
-        this.player.addItem(this.item);
+        Supplier<Item> itemSupplier = () -> item;
+        this.player.addItem(itemSupplier.get());
     }
 }
