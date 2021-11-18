@@ -8,7 +8,7 @@ public class Player extends Creature implements Describable{
 
 
      */
-    public int hp = 5;
+    public int hp = 10;
     public Situation currentSituation, nextSituation, gameOver;
     public ArrayList<Item> inventory = new ArrayList<Item>();
 
@@ -21,10 +21,11 @@ public class Player extends Creature implements Describable{
     }
 
     public void receiveDmg(int dmg) {
-        this.hp -= dmg;
+        this.hp = this.hp - dmg;
+        System.out.println("You've taken " + dmg +" damage. You have " + this.hp + " hp left.\n");
         if (this.hp < 1){
             this.nextSituation = gameOver;
-            System.out.println("You've fallen in the battle.");
+            System.out.println("You've fallen in the battle.\n" );
             this.nextSituation.execute();
         }
     }
@@ -60,14 +61,16 @@ public class Player extends Creature implements Describable{
 
     //Inventory
     public void addItem(Item item){
-        inventory.add(item);
+        System.out.println(item.name() + "has been acquired." + "\n");
+        this.inventory.add(item);
     }
 
     public void removeItem(Item item){
-        inventory.remove(item);
+        this.inventory.remove(item);
     }
 
-    public boolean hasItem(Item item) {return  inventory.contains(item);}
+    public boolean hasItem(Item item) {
+        return  this.inventory.contains(item);}
 
     @Override
     public String getDescription() {

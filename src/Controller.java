@@ -13,7 +13,7 @@ public class Controller<Type extends Choice> {
     private Player player;
     FileManager fileManager;
     Situation situation;
-    Choice options = New Choice("Go into the cave", optionsMenu);
+    //Choice options = New Choice("Go into the cave", optionsMenu);
 
     Controller(Player player, FileManager fileManager) {
         this.player = player;
@@ -28,15 +28,15 @@ public class Controller<Type extends Choice> {
         while(true){
             try {
                 this.player.getCurrentSituation().execute();
-
+                int maxIndex = this.showChoices();
+                this.userInput = this.getUserInput(maxIndex);
+                this.nextSituation = this.player.getCurrentSituation().getChoice(userInput - 1).getTargetSituation();
+                this.player.setCurrentSituation(this.nextSituation);
             } catch (NullPointerException e){
-                System.out.println("Thank you for playing");
+                System.out.println("Thank you for playing"); //win condition will have null as choices
                 return;
             }
-            int maxIndex = this.showChoices();
-            this.userInput = this.getUserInput(maxIndex);
-            this.nextSituation = this.player.getCurrentSituation().getChoice(userInput - 1).getTargetSituation();
-            this.player.setCurrentSituation(this.nextSituation);
+
         }
     }
     public void gameOverOptions(){
@@ -56,11 +56,11 @@ public class Controller<Type extends Choice> {
     public int showChoices(){
         //returns maximal value for viable input
         int i = 1;
-        this.player.getCurrentSituation().getChoices().add()
+        //this.player.getCurrentSituation().getChoices().add();
         for (Choice choice:
              this.player.getCurrentSituation().getChoices()) {
             if(choice instanceof Choice){
-                System.out.println(i + " :" + ((Choice) choice).getDescription() + "\n");
+                System.out.println( i + " :" + ((Choice) choice).getDescription() + "\n");
                 i++;
             }
 
@@ -78,6 +78,10 @@ public class Controller<Type extends Choice> {
         Scanner scan = new Scanner(System.in);
         System.out.print("What will you do?: ");
         int userInput = scan.nextInt();
+        while ( this.player.getCurrentSituation().getChoices().size() < userInput - 1){
+            System.out.print("Wrong number, please select again: ");
+            userInput = scan.nextInt();
+        }
         return userInput;
     }
 

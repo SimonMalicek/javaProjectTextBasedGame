@@ -20,7 +20,6 @@ public class SituationAddItem extends Situation{
     @Override
     public void execute(){
         System.out.println(super.getDescription());
-        System.out.println(item.getDescription() + "has been acquired.");
-        player.addItem(item);
+        this.player.addItem(this.item);
     }
 }

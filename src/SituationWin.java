@@ -7,6 +7,5 @@ public class SituationWin extends Situation{
 
     public void execute(){
         System.out.println(this.getDescription());
-        this.execute();
     }
 }

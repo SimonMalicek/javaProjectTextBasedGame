@@ -23,7 +23,7 @@ public class Situation implements Describable{
     }
 
     public void execute(){
-        System.out.println(this.getDescription());
+        System.out.println(this.getDescription() + "\n");
     }
 
     public ArrayList<Choice> getChoices() {

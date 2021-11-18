@@ -17,7 +17,7 @@ public class SituationTakeDamage extends Situation{
 
     @Override
     public void execute(){
-        System.out.println(super.getDescription());
+        System.out.println(super.getDescription() + "\n");
         player.receiveDmg(dmg);
     }
 }
