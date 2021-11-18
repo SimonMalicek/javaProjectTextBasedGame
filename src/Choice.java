@@ -1,8 +1,10 @@
-public class Choice implements Describable{
-    /*
-    Volba, říká hráči co udělá.
+import java.io.Serializable;
 
-    The choice shows what will player do.
+public class Choice implements Describable, Serializable {
+    /*
+    Volba, má popis, který Controller vypíše do konzole. Má targetSituation do které se hráč přemístí, pokud si možnost zvolí.
+
+    Player can chooce Choice in the terminal, after that player will move to the targetSituation.
      */
     public String description = "Place holder desc";
     public Situation targetSituation;//Do jaké situace pošle hráče pokuď si zvolí tuto možnost | Where will be player sent after choosing the choice

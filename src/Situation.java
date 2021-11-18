@@ -1,7 +1,8 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
-public class Situation implements Describable{
+public class Situation implements Describable, Serializable {
     /*
     "buňka" v grafu. Má popis, který říká v jaké jste situaci a možnosti, přes které se dostanete do další situace.
     Situace má metodu execute, která vypíše popis situace, používá ji třída Controller, která řídi input output
@@ -41,4 +42,6 @@ public class Situation implements Describable{
     public void addChoice(Choice choice){
         this.choices.add(choice);
     }
+
+
 }

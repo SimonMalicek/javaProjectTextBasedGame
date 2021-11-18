@@ -1,9 +1,10 @@
+import java.io.IOException;
 import java.util.ArrayList;
 
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Player player = new Player(); //for references, we haven't initilize
 
         //items
@@ -11,6 +12,8 @@ public class Main {
 
         //end,win of the game
         SituationWin win = new SituationWin("Congratulation you won\n");
+        SituationWin exit = new SituationWin("\nThank you for playing");
+
         ArrayList<Choice> gameoverChoices = new ArrayList<>(){};
         Situation gameOver = new Situation("Game over", gameoverChoices);
 
@@ -32,14 +35,14 @@ public class Main {
         Situation swordIn = new Situation("You see a Sword in the stone.", swordInChoices);
         Situation swordPuzzle = new Situation("Riddle me this: What is the worst case of Quicksort?", swordPuzzleChoices);
         SituationAddItem swordOut = new SituationAddItem("You've managed to pull out the sword.", swordOutChoices, player, sword);
-        Situation chasm = new Situation("You stand before the dark chasm, you don't say any way pass it.", chasmChoices);
+        Situation chasm = new Situation("You stand before the dark chasm, you don't see any way pass it.", chasmChoices);
         Situation dragon = new Situation("Mighty dragon is blocking the way.", dragonChoices);
         SituationTakeDamage dragonNoSword = new SituationTakeDamage("You've challenged the dragon in hand-to-hand combat.", gameoverChoices, player, 10 );
         SituationTakeDamage dragonWithSword = new SituationTakeDamage("Good thing you found that sword, after furious fight you stand victorious.", dragonWithSwordChoices , player, 9);
 
         //choices for end
         Choice end1 = new Choice("Restart", start);
-        Choice end2 = new Choice("Exit", null);
+        Choice end2 = new Choice("Exit", exit);
         gameoverChoices.add(end1);
         gameoverChoices.add(end2);
 
@@ -93,9 +96,7 @@ public class Main {
 
         //choices for dragonWithSword
         Choice dragonWithSword1 = new Choice("Get the treasure.",win);
-        Choice dragonWithSword2 = new Choice("Go back",crossroads);
         dragonWithSwordChoices.add(dragonWithSword1);
-        dragonWithSwordChoices.add(dragonWithSword2);
 
         //final setup of player and save system
         player.setMainSituations(start, gameOver);

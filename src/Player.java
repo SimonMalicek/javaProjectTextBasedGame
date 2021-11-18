@@ -1,12 +1,11 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Player extends Creature implements Describable{
+public class Player extends Creature implements Describable, Serializable {
     /*
     V této třídě jsou uložené stavy hry, po kterých hráč putuje.
     Hráč má životy, pokuď klesnou pod 1, skončí hra.
     Hráč má inventář, kde postupně sbírá itemy ve hře.
-
-
      */
     public int hp = 10;
     public Situation currentSituation, nextSituation, gameOver;
@@ -50,11 +49,6 @@ public class Player extends Creature implements Describable{
         return nextSituation;
     }
 
-    public void setCurrent(Situation nextSituation) {
-
-        this.nextSituation = nextSituation;
-    }
-
     public Situation getCurrentSituation() {
         return currentSituation;
     }
@@ -80,5 +74,13 @@ public class Player extends Creature implements Describable{
     //
     public void setNextSituation(Situation nextSituation) {
         this.nextSituation = nextSituation;
+    }
+
+    public void loadSave(Player newPlayer){
+        this.setHp(newPlayer.getHp());
+        this.setCurrentSituation(newPlayer.getCurrentSituation());
+        this.setNextSituation(newPlayer.getNextSituation()) ;
+        this.inventory = newPlayer.inventory;
+        System.out.println("Game has been loaded \n");
     }
 }

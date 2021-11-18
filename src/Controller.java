@@ -1,3 +1,5 @@
+import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Controller<Type extends Choice> {
@@ -8,12 +10,10 @@ public class Controller<Type extends Choice> {
     Class communicates with player. It shows him the options he have and then waits for his input. After correct input has
     been accepted, it sends the input to the player class.
      */
-    private Situation currentSituation, nextSituation;
+    private Situation nextSituation;
     private int userInput;
     private Player player;
     FileManager fileManager;
-    Situation situation;
-    //Choice options = New Choice("Go into the cave", optionsMenu);
 
     Controller(Player player, FileManager fileManager) {
         this.player = player;
@@ -27,28 +27,56 @@ public class Controller<Type extends Choice> {
     public void loop(){
         while(true){
             try {
+                if(this.player.getCurrentSituation() instanceof SituationWin ) { //if player wins we break loop
+                    this.player.getCurrentSituation().execute();
+                    break;
+                }
                 this.player.getCurrentSituation().execute();
                 int maxIndex = this.showChoices();
                 this.userInput = this.getUserInput(maxIndex);
-                this.nextSituation = this.player.getCurrentSituation().getChoice(userInput - 1).getTargetSituation();
-                this.player.setCurrentSituation(this.nextSituation);
-            } catch (NullPointerException e){
-                System.out.println("Thank you for playing"); //win condition will have null as choices
-                return;
+                if(this.userInput == maxIndex - 1){ //setting menu
+                    this.options();
+                }
+                else {
+                    this.nextSituation = this.player.getCurrentSituation().getChoice(userInput - 1).getTargetSituation();
+                    this.player.setCurrentSituation(this.nextSituation);
+                }
+            } catch (InputMismatchException e){
+                System.out.println("Wrong input please try again: ");
+            }
+            catch (Exception e){
+                System.out.println(e);
+                break;
             }
 
         }
     }
-    public void gameOverOptions(){
+
+    public void options() throws IOException, ClassNotFoundException {
         Scanner scan = new Scanner(System.in);
-        System.out.println("1: Load last save 2: Exit");
-        try{
-            int userInput = scan.nextInt();
-
-
-        }catch(Exception e){
-            System.out.println("Invalid input");
-            gameOverOptions();
+        System.out.println("Options");
+        System.out.println("1 : Save the game");
+        System.out.println("2 : load last save: ");
+        System.out.println("3 : exit menu");
+        System.out.println("4 : exit the game");
+        System.out.print("Select: ");
+        int userInput = scan.nextInt();
+        while (userInput <= 0 || userInput > 4){
+            System.out.print("Wrong number, please select again: ");
+            userInput = scan.nextInt();
+        }
+        switch (userInput) {
+            case 1:
+                this.fileManager.saveTheGame();
+                break;
+            case 2:
+                this.fileManager.loadTheGame();
+                break;
+            case 3:
+                break;
+            case 4:
+                this.player.setCurrentSituation(new SituationWin("\nThank you for playing"));
+                break;
         }
 
     }
@@ -60,30 +88,26 @@ public class Controller<Type extends Choice> {
         for (Choice choice:
              this.player.getCurrentSituation().getChoices()) {
             if(choice instanceof Choice){
-                System.out.println( i + " :" + ((Choice) choice).getDescription() + "\n");
+                System.out.println( i + " : " + ((Choice) choice).getDescription() + "\n");
                 i++;
             }
-
         }
-        System.out.println(i + " :" + "Options menu" + "\n");
+        System.out.println(i + " : " + "Options menu" + "\n");
         i++;
         return i;
-    }
-
-    public Situation getCurrentSituation(){
-        return this.currentSituation;
     }
 
     public int getUserInput(int maxIndex) {
         Scanner scan = new Scanner(System.in);
         System.out.print("What will you do?: ");
         int userInput = scan.nextInt();
-        while ( this.player.getCurrentSituation().getChoices().size() < userInput - 1){
+        while ( maxIndex + 2  < userInput || userInput <= 0){ //we start from 1 and we have menu option that's why + 2
             System.out.print("Wrong number, please select again: ");
             userInput = scan.nextInt();
         }
         return userInput;
     }
+
 
     public Situation getNextSituation() {
         return nextSituation;
